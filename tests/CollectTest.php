@@ -45,4 +45,31 @@ class CollectTest extends TestCase
         $this->assertInstanceOf(Collect\Collect::class, $result);
         $this->assertEquals([0, 3, 4], $result->toArray());
     }
+    public function testFirstOnEmptyCollection()
+    {
+        $collect = new Collect\Collect([]);
+        $this->assertNull($collect->first()); 
+    }
+
+    public function testPopOnEmptyCollection()
+    {
+        $collect = new Collect\Collect([]);
+        $result = $collect->pop();
+        $this->assertInstanceOf(Collect\Collect::class, $result);
+        $this->assertEmpty($result->toArray());  
+    }
+
+    public function testSpliceWithInvalidIndex()
+    {
+        $this->expectException(\TypeError::class);  
+        $collect = new Collect\Collect([1, 2, 3]);
+        $collect->splice('invalid_index', 1);
+    }
+
+    public function testSpliceWithNegativeLength()  
+    {
+        $collect = new Collect\Collect([1, 2, 3, 4]);
+        $result = $collect->splice(1, -1);
+        $this->assertInstanceOf(Collect\Collect::class, $result);
+    }
 }
